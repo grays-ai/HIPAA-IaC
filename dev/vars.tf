@@ -4,7 +4,7 @@
 
 # AWS region
 variable "aws_region" {
-  default = "us-east-2"
+  default = "us-east-1"
 }
 
 /* Service configuration */
@@ -12,7 +12,7 @@ variable "aws_region" {
 # What to call resources created by this module
 variable "service_name" {
   description = "Name of the application and associated resources"
-  default = "compliance"
+  default = "gray"
 }
 
 # What stage this service is in
@@ -23,7 +23,7 @@ variable "service_stage" {
 
 variable "service_domain_name" {
   description = "The primary domain name for the application and associated resources."
-  default = "testing.banyan.computer"
+  default = "grays.ai"
 }
 
 /* Application and environment configuration */
@@ -32,12 +32,12 @@ variable "service_domain_name" {
 
 variable "ecr_url" {
     description = "The URL of the ECR repository"
-    default = "288251279596.dkr.ecr.us-east-2.amazonaws.com/compliance-django-ecr"
+    default = "848286615134.dkr.ecr.us-east-1.amazonaws.com/chart-review-ecr"
 }
 
 variable "app_version" {
   description = "Version of the application, as tagged in ECR"
-  default = "0.0.0"
+  default = "latest"
 }
 
 # Django configuration
@@ -64,7 +64,7 @@ variable "django_superuser_username" {
 
 variable "django_superuser_email" {
   description = "The email address of the Django superuser"
-  default     = "alex@banyan.computer"
+  default     = "jonah.arturo@gmail.com"
 }
 
 variable "django_use_s3" {

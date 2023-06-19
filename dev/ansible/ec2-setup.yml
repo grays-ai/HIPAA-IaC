@@ -21,6 +21,7 @@
 # -e django_sql_host=postgres \ # Django SQL host
 # -e django_sql_port=5432 \ # Django SQL port
 # /path/to/ec2-setup.yml # Path to this playbook from where you are running it
+
 - become: yes
   hosts: all
   name: Configure our Ec2 instance to run a Dockerized Django app
@@ -32,6 +33,39 @@
         state: latest
         update_cache: yes
       register: yum_update
+
+    - name: Verify Python version
+      command: python3 --version
+      register: python_version
+
+    - name: Debug python_version
+      debug:
+        var: python_version.stdout_lines
+
+    # - name: urllib3 correct version
+    #   command: 
+    #     cmd: python3 -m pip install "urllib3<2"
+
+    # - name: requests correct version
+    #   command:
+    #     cmd: python3 -m pip install "requests<2.3"
+
+    # - name: Verify requests version
+    #   command: pip show requests
+    #   register: requests_version
+
+    # - name: Verify urllib3 version
+    #   command: pip show urllib3
+    #   register: urllib3_version
+
+    # - name: Debug ulr
+    #   debug:
+    #     var: urllib3_version.stdout_lines
+
+    # - name: debug rewues
+    #   debug:
+    #     var: requests_version.stdout_lines
+
     - name: Install Docker
       yum:
         name: docker
@@ -48,97 +82,10 @@
         groups: docker
         append: yes
       register: docker_user
+      
+    - name: Install pip
+      raw: sudo yum -y install python3-pip
+
     - name: Install Python Docker
-      pip:
-        name: docker
-        state: present
-    - name: Enable Nginx from the AWS linux extras
-      shell: amazon-linux-extras install nginx1.12 -y
-      register: nginx_install
-
-    ### Configure Environment for Nginx ###
-    - name: Copy Nginx config file to the correct location
-      copy:
-        src: nginx.conf
-        dest: /etc/nginx/nginx.conf
-      register: nginx_copy
-      notify:
-        - restart nginx
-    - name: Create directories to hold our static files
-      file:
-        path: /var/www/staticfiles
-        state: directory
-      register: staticfiles_dir
-    - name: Give Nginx access to our static files
-      file:
-        path: /var/www/staticfiles
-        state: directory
-        mode: 0777
-        owner: nginx
-        group: nginx
-      register: staticfiles_nginx
-# Remember to uncomment these if you want nginx to serve uploaded content
-#    - name: Create directories to hold our static files
-#      file:
-#        path: /var/www/certfiles
-#        state: directory
-#      register: certfiles_dir
-#    - name: Give Nginx access to our static files
-#      file:
-#        path: /var/www/certfiles
-#        state: directory
-#        mode: 0777
-#        owner: nginx
-#        group: nginx
-#      register: certfiles_nginx
-
-    ### Pull and run our Dockerized Django app ###
-    - name: Get ECR Login
-      shell: aws ecr get-login-password --region {{ aws_region }} | docker login --username AWS --password-stdin {{ ecr_url }}
-      register: ecr_login
-    - name: Pull Django app from ECR
-      community.docker.docker_image:
-        name: "{{ ecr_url }}:{{ app_version }}"
-        source: pull
-    - name: Run App Container
-      docker_container:
-        name: compliance-django
-        image: "{{ ecr_url }}:{{ app_version }}"
-        state: started
-        restart_policy: always
-        # Configure Django
-        env:
-          DEBUG: "{{ django_debug }}"
-          SECRET_KEY: "{{ django_secret_key }}"
-          DJANGO_ALLOWED_HOSTS: "{{ django_allowed_hosts }}"
-          SQL_ENGINE: "{{ django_sql_engine }}"
-          DJANGO_SUPERUSER_USERNAME: "{{ django_superuser_username }}"
-          DJANGO_SUPERUSER_PASSWORD: "{{ django_superuser_password }}"
-          DJANGO_SUPERUSER_EMAIL: "{{ django_superuser_email }}"
-          USE_S3: "{{ django_use_s3 }}"
-          AWS_CERT_BUCKET_NAME: "{{ django_aws_cert_bucket_name }}"
-          AWS_CERT_BUCKET_REGION: "{{ aws_region }}"
-          SQL_DATABASE: "{{ django_sql_database }}"
-          SQL_USER: "{{ django_sql_user }}"
-          SQL_PASSWORD: "{{ django_sql_password }}"
-          SQL_HOST: "{{ django_sql_host }}"
-          SQL_PORT: "{{ django_sql_port }}"
-        ports:
-          - 8000:8000
-        # Configure docker to share content with Nginx
-        volumes:
-          - /var/www/staticfiles:/home/app/web/staticfiles
-        # Remember to uncomment these if you want nginx to serve uploaded content
-        #          - /var/www/certfiles:/home/app/web/certfiles
-        # Call the start script
-        command: [ "./start.sh" ]
-      register: "app_container_run"
-
-  handlers:
-    - name: restart nginx
-      service:
-        name: nginx
-        state: restarted
-
-
-
+      command:
+        cmd: pip install --ignore-installed docker

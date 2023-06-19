@@ -11,6 +11,6 @@ done
 
 echo "PostgreSQL started"
 
-chown -R app:app /home/app/web/staticfiles
+# chown -R app:app /home/app/web/staticfiles
 # Start server
 exec "$@"

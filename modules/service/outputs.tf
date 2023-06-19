@@ -1,10 +1,10 @@
 /* ELB outputs */
 
-output "elb_dns_name" {
+output "alb_dns_name" {
   description = "DNS name of the ELB"
-  value = aws_elb.elb.dns_name
+  value = aws_lb.alb.dns_name
 }
-output "elb_https_endpoint" {
+output "alb_https_endpoint" {
   description = "HTTPS endpoint of the ELB"
   value = "https://${var.stage == "prod" ? "" : var.stage}${var.stage == "prod" ? "" : "."}${var.domain_name}"
 }

@@ -32,7 +32,7 @@ resource "null_resource" "ecr" {
   # Build and push the image using our Dockerfile and Ansible playbook.
   provisioner "local-exec" {
     command = <<-EOT
-      ansible-playbook \
+      ansible-playbook -vvv \
         -e aws_region=${var.aws_region} \
         -e aws_account_id=${data.aws_caller_identity.current.account_id} \
         -e app_name=${var.app_name} \

@@ -60,11 +60,13 @@ resource "aws_acm_certificate_validation" "stage" {
   validation_record_fqdns = [for record in aws_route53_record.stage_validate : record.fqdn]
 }
 
+
+
 /* Create a new load balancer for the the django app */
 
 # Create a security group for the load balancer
-resource "aws_security_group" "elb" {
-  name        = join("-", [var.name, "elb-sg", var.stage, var.deploy_id])
+resource "aws_security_group" "alb" {
+  name        = join("-", [var.name, "alb-sg", var.stage, var.deploy_id])
   description = "Allow inbound traffic from the internet over HTTPS. Manage access to the app via the django app."
   vpc_id      = aws_vpc.vpc.id
 
@@ -100,63 +102,115 @@ resource "aws_security_group" "elb" {
     deploy_id    = var.deploy_id
     stage        = var.stage
     service_name = var.name
-    name         = join("-", [var.name, "elb-sg"])
+    name         = join("-", [var.name, "alb-sg"])
   }
 }
-# Create a load balancer for the django app
-resource "aws_elb" "elb" {
-  name    = join("-", [var.name, "elb", var.stage, var.deploy_id])
-  subnets = [
-    aws_subnet.public.id,
-  ]
-  security_groups = [aws_security_group.elb.id]
 
-  depends_on = [
-    aws_acm_certificate.stage_cert
-  ]
-
-  # Listen to our Django app on port 80
-  listener {
-    instance_port     = 80
-    instance_protocol = "http"
-    lb_port           = 80
-    lb_protocol       = "http"
-  }
-  listener {
-    instance_port      = 80
-    instance_protocol  = "http"
-    lb_port            = 443
-    lb_protocol        = "https"
-    ssl_certificate_id = aws_acm_certificate_validation.stage.certificate_arn
-  }
+resource "aws_lb_target_group" "backend" {
+  name     = "backend-tg"
+  port     = 80
+  protocol = "HTTP"
+  vpc_id   = aws_vpc.vpc.id
 
   health_check {
-    healthy_threshold   = 2
-    unhealthy_threshold = 2
-    timeout             = 3
-    target              = "HTTP:80/"
-    interval            = 30
+    path = "/admin/health"
   }
 
-  instances                 = [aws_instance.ec2.id]
-  cross_zone_load_balancing = true
-  idle_timeout              = 400
+  tags = {
+    Name = "backend-tg"
+  }
+}
+
+resource "aws_lb_target_group" "frontend" {
+  name     = "frontend-tg"
+  port     = 3000
+  protocol = "HTTP"
+  vpc_id   = aws_vpc.vpc.id
+
+  health_check {
+    path = "/"
+  }
+
+  tags = {
+    Name = "frontend-tg"
+  }
+}
+
+# Create a load balancer for the django app
+resource "aws_lb" "alb" {
+  name               = join("-", [var.name, "alb", var.stage, var.deploy_id])
+  subnets            = [aws_subnet.public[0].id, aws_subnet.public[1].id]
+  security_groups    = [aws_security_group.alb.id]
+  load_balancer_type = "application"
+
+  enable_deletion_protection = false
 
   tags = {
     deploy_id    = var.deploy_id
     stage        = var.stage
     service_name = var.name
-    name         = join("-", [var.name, "elb"])
+    name         = join("-", [var.name, "alb"])
   }
 }
+
+# Create a listener for the load balancer
+resource "aws_lb_listener" "https" {
+  load_balancer_arn = aws_lb.alb.arn
+  port              = 443
+  protocol          = "HTTPS"
+  certificate_arn   = aws_acm_certificate_validation.stage.certificate_arn
+
+  default_action {
+    type = "fixed-response"
+    fixed_response {
+      content_type = "text/plain"
+      message_body = "Invalid request"
+      status_code  = "400"
+    }
+  }
+}
+
+resource "aws_lb_listener_rule" "backend" {
+  listener_arn = aws_lb_listener.https.arn
+  priority     = 100
+
+  action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.backend.arn
+  }
+
+  condition {
+    path_pattern {
+      values = ["/admin*"]
+    }
+  }
+}
+
+resource "aws_lb_listener_rule" "frontend" {
+  listener_arn = aws_lb_listener.https.arn
+  priority     = 101
+
+  action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.frontend.arn
+  }
+
+  condition {
+    path_pattern {
+      values = ["/*"]
+    }
+  }
+}
+
 # Add a DNS record for the load balancer
-resource "aws_route53_record" "elb" {
+resource "aws_route53_record" "alb" {
   zone_id = var.stage == "prod" ? data.aws_route53_zone.primary.zone_id : aws_route53_zone.stage[0].zone_id
   name    = var.stage == "prod" ? var.domain_name : "${var.stage}.${var.domain_name}"
   type    = "A"
+  
   alias {
-    name                   = aws_elb.elb.dns_name
-    zone_id                = aws_elb.elb.zone_id
+    name                   = aws_lb.alb.dns_name
+    zone_id                = aws_lb.alb.zone_id
     evaluate_target_health = false
   }
 }

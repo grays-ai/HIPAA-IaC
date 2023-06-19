@@ -13,36 +13,6 @@
     - name: Get ECR Login
       shell: aws ecr get-login-password --region {{ aws_region }} | docker login --username AWS --password-stdin {{ aws_account_id }}.dkr.ecr.{{ aws_region }}.amazonaws.com
       register: ecr_login
-    - name: Pull the latest version of the django app's repo
-      git:
-        repo: https://github.com/grays-ai/chart-review.git
-        dest: ../docker/chart-review
-        version: jonah/aws-config
-        clone: yes
-        key_file: /Users/jonahkaye/.ssh/id_rsa
-
-    - name: Debug the current working directory
-      command: pwd
-      register: pwd_output
-    - debug:
-        var: pwd_output.stdout
-
-    - name: List the files in the cloned directory
-      command: ls -la ../docker/chart-review/backend
-      register: ls_output
-    - debug:
-        var: ls_output.stdout_lines
-
-    - name: Build the image
-      command:
-        chdir: ../docker
-        cmd: docker buildx build --file Dockerfile {{ app_name }}-ecr .
-      register: image_build
-
-    - name: Debug the Docker build output
-      debug:
-        var: image_build.stdout_lines
-        verbosity: 1
         
     - name: Tag the image with the version
       command: docker tag {{ app_name }}-ecr:latest {{ aws_account_id }}.dkr.ecr.{{ aws_region }}.amazonaws.com/{{ app_name }}-ecr:{{ app_version }}
