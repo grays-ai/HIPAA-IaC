@@ -126,3 +126,38 @@ This deletes any files, keys, and resources created by this module.
 
 See `modules/service/` for more information on the infrastructure deployed by this module.
 See `modules/service/var.tf` for more information on the variables that can be configured for this module.
+
+
+------------
+
+Here is how this goes. I use terraform only to provision resources. Ansible pisses me off plus all the issues with the ec2 urrllib3 ssl.
+
+So basically build the docker images.
+- docker-compose build backend
+- docker tag backend:instructor-latest 848286615134.dkr.ecr.us-east-1.amazonaws.com/chart-review-ecr:backend
+- aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 848286615134.dkr.ecr.us-east-1.amazonaws.com/chart-review-ecr
+- docker push 848286615134.dkr.ecr.us-east-1.amazonaws.com/chart-review-ecr:backend
+
+From ssh:
+- docker pull 848286615134.dkr.ecr.us-east-1.amazonaws.com/chart-review-ecr:backend
+
+
+I had to run this to resolve key pair issues:
+
+terraform import module.service.aws_key_pair.ec2 gray-key
+Ok so the key issue was that I was righting the key for the 
+
+docker run -it postgres psql -h gray-rds-dev-yancw9xa.crx8rth9mjna.us-eas
+t-1.rds.amazonaws.com -U rds_admin_user -d postgres -p 5432
+
+\dt to see our tables bitchessssssss
+\q to quit
+
+
+mapping from port 80 to 8000, and then daphne runs on 8000 and is bound to 0.0.0.0 so it will accept any IP?
+
+
+ELB:
+- tried adding security group to EC@ for elb on port 80 
+- tried increasing health check things
+ d

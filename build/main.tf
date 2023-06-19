@@ -6,12 +6,12 @@ terraform {
       version = "~> 4.0"
     }
   }
-  required_version = "~> 1.3.0"
+  required_version = "~> 1.4.6"
 
   backend "s3" {
-    bucket = "banyan-tf-remote-state"
-    key    = "compliance/ecr/terraform.tfstate"
-    region = "us-east-2"
+    bucket = "grays-tf-remote-state"
+    key    = "grays/ecr/terraform.tfstate"
+    region = "us-east-1"
   }
 }
 # Provider Configuration

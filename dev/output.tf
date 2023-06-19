@@ -14,14 +14,14 @@ output "ec2_priv_key_path" {
     description = "The path to the private key for the EC2 instance on the local machine"
     value = module.service.ec2_priv_key_path
 }
-output "elb_dns_name" {
+output "alb_dns_name" {
     description = "The DNS name of the ELB"
-    value = module.service.elb_dns_name
+    value = module.service.alb_dns_name
 }
 # The public DNS name of our ELB
-output "elb_endpoint" {
-    description = "The endpoint for the ELB"
-    value = module.service.elb_https_endpoint
+output "alb_endpoint" {
+    description = "The endpoint for the ALB"
+    value = module.service.alb_https_endpoint
 }
 output "rds_username" {
     description = "The username for the RDS instance"

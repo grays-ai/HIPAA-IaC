@@ -8,14 +8,14 @@ terraform {
       version = "~> 4.0"
     }
   }
-  required_version = "~> 1.3.0"
+  required_version = "~> 1.4.6"
 
   # Our Remote State for Terraform on AWS
   # This bucket already exists in our AWS account
   backend "s3" {
-      bucket = "banyan-tf-remote-state"
-      key    = "compliance/dev/terraform.tfstate"
-      region = "us-east-2"
+      bucket = "grays-tf-remote-state"
+      key    = "grays/dev/terraform.tfstate"
+      region = "us-east-1"
   }
 }
 

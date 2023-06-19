@@ -23,13 +23,17 @@ resource "aws_security_group" "ec2" {
     description = "ssh"
     cidr_blocks = ["0.0.0.0/0"]
   }
-  # HTTP - allows access to the application through the load balancer
+
+  # HTTP - allows access to the backend through the frontend over the localhost. elb 
   ingress {
-    from_port   = 80
+    from_port   = 3000
     to_port     = 80
     protocol    = "tcp"
     description = "HTTP"
     cidr_blocks = ["0.0.0.0/0"]
+    security_groups = [
+      aws_security_group.alb.id
+    ]
   }
   # HTTPS - allows ec2 to talk to surrounding services
   ingress {
@@ -78,7 +82,7 @@ resource "null_resource" "ec2-key-write" {
 }
 # Key pair to use for the EC2 instance
 resource "aws_key_pair" "ec2" {
-  key_name   = join("-", [var.name, "ec2-key", var.stage, var.deploy_id])
+  key_name   = "gray-key"
   public_key = tls_private_key.ec2.public_key_openssh
   tags       = {
     deploy_id    = var.deploy_id
@@ -148,15 +152,15 @@ resource "aws_iam_role_policy" "ec2" {
   })
 }
 # Definition of the Amazon Machine Image (AMI) to use for the EC2 instance
-data "aws_ami" "ec2" {
-  most_recent = true
-  owners      = ["amazon"]
-  filter {
-    name   = "name"
-    # We want something with hardware virtualization support, on x86_64, using gp2 storage
-    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
-  }
-}
+# data "aws_ami" "ec2" {
+#   most_recent = true
+#   owners      = ["amazon"]
+#   filter {
+#     name   = "name"
+#     # We want something with hardware virtualization support, on x86_64, using gp2 storage
+#     values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+#   }
+# }
 # (Finally) The EC2 Instance itself
 resource "aws_instance" "ec2" {
   # Configure the instance
@@ -167,7 +171,7 @@ resource "aws_instance" "ec2" {
     volume_type = var.ec2_config.volume_type
   }
   # Link our Dependencies
-  ami                    = data.aws_ami.ec2.id
+  ami                    = "ami-0b54418bdd76353ce"
   key_name               = aws_key_pair.ec2.key_name
   iam_instance_profile   = aws_iam_instance_profile.ec2.name
   vpc_security_group_ids = [aws_security_group.ec2.id]
