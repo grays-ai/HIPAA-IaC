@@ -1,9 +1,13 @@
-# compliance-backend
+# HIPAA-terraform-healthcare-application
 
-Note: the documentation here isn't extensive. If you need more information, please contact jonahkaye@grays.ai. 
+The idea of this Infrastructure as Code project is to have an open source version of HIPAA compliant programmaticaly provsioned AWS architecture. I personally found
+the process of understanding the technical HIPAA requirements difficult, and so I hope this can be a resource to others. Its too hard to provision
+infrastructure in the AWS GUI, and too hard to share that with others. Security comes with transparency!
 
-Deploys a django app with surround AWS hosted infrastructure managed by terraform
-Django app is implemented in `compliance-django-app` repository
+Note: the documentation here isn't extensive enough. If you need more information, please contact jonahkaye@grays.ai. 
+
+Deploys a django app and create-react-app with surround AWS hosted infrastructure managed by terraform
+
 
 To use this repository, you must have the following installed:
 - terraform
