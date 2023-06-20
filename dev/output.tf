@@ -33,6 +33,13 @@ output "rds_password" {
     value = random_string.rds_password.result
     sensitive = true
 }
+
+# the endpoint for the database
+output "rds_endpoint" {
+    description = "The endpoint for the RDS"
+    value = module.service.rds_endpoint
+}
+
 # The password for the django admin user
 output "django_superuser_password" {
     description = "The password for the django admin user"

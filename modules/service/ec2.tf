@@ -24,10 +24,21 @@ resource "aws_security_group" "ec2" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  # HTTP - allows access to the backend through the frontend over the localhost. elb 
+  # HTTP - allows access to the backend over the localhost. elb 
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    description = "HTTP"
+    cidr_blocks = ["0.0.0.0/0"]
+    security_groups = [
+      aws_security_group.alb.id
+    ]
+  }
+  
   ingress {
     from_port   = 3000
-    to_port     = 80
+    to_port     = 3000
     protocol    = "tcp"
     description = "HTTP"
     cidr_blocks = ["0.0.0.0/0"]
@@ -175,7 +186,7 @@ resource "aws_instance" "ec2" {
   key_name               = aws_key_pair.ec2.key_name
   iam_instance_profile   = aws_iam_instance_profile.ec2.name
   vpc_security_group_ids = [aws_security_group.ec2.id]
-  subnet_id              = aws_subnet.public.id
+  subnet_id              = aws_subnet.public[0].id
 
   tags = {
     deploy_id    = var.deploy_id

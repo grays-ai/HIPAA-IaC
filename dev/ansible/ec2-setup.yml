@@ -1,27 +1,3 @@
-# ec2-setup.yml: Configure an EC2 instance to run our Django app in a development environment.
-# This configuration has been based on the implementation of the Django app in the compliance-django-app repo.
-# See /compliance-backend/build/docker more details on how the Django app is run in a Docker container.
-# useage:
-# ansible-playbook \
-# -e ecr_url=123456789012.dkr.ecr.us-east-1.amazonaws.com/app-ecr  \ # ECR url where app image is stored
-# -e app_version=1.0.0 \ # Version of the application we want to pull from ECR
-# -e django_debug=True \ # Django debug mode
-# -e django_secret_key=secret \ # Django secret key
-# -e django_allowed_hosts=* \ # Django allowed hosts
-# -e django_sql_engine=django.db.backends.postgresql \ # Django SQL engine
-# -e django_superuser_name=admin \ # Django superuser name
-# -e django_superuser_password=admin \ # Django superuser password
-# -e django_superuser_email=alex@banyan.computer \ # Django superuser email
-# -e django_use_s3=FALSE \ # Whether or not to upload certs to S3
-# -e django_aws_cert_bucket_name=certs \ # Django AWS cert bucket name
-# -e django_aws_cert_bucket_region=us-east-1 \ # Django AWS cert bucket region
-# -e django sql_database=postgres \ # Django SQL database
-# -e django_sql_user=postgres \ # Django SQL user
-# -e django_sql_password=postgres \ # Django SQL password
-# -e django_sql_host=postgres \ # Django SQL host
-# -e django_sql_port=5432 \ # Django SQL port
-# /path/to/ec2-setup.yml # Path to this playbook from where you are running it
-
 - become: yes
   hosts: all
   name: Configure our Ec2 instance to run a Dockerized Django app
@@ -41,30 +17,6 @@
     - name: Debug python_version
       debug:
         var: python_version.stdout_lines
-
-    # - name: urllib3 correct version
-    #   command: 
-    #     cmd: python3 -m pip install "urllib3<2"
-
-    # - name: requests correct version
-    #   command:
-    #     cmd: python3 -m pip install "requests<2.3"
-
-    # - name: Verify requests version
-    #   command: pip show requests
-    #   register: requests_version
-
-    # - name: Verify urllib3 version
-    #   command: pip show urllib3
-    #   register: urllib3_version
-
-    # - name: Debug ulr
-    #   debug:
-    #     var: urllib3_version.stdout_lines
-
-    # - name: debug rewues
-    #   debug:
-    #     var: requests_version.stdout_lines
 
     - name: Install Docker
       yum:
