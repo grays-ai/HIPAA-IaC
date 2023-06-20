@@ -37,8 +37,8 @@ resource "aws_internet_gateway" "igw" {
 resource "aws_subnet" "public" {
   count             = 2
   vpc_id = aws_vpc.vpc.id
-  cidr_block = var.public_subnet_cidr
-  availability_zone = data.aws_availability_zones.available.names[0]
+  cidr_block = var.public_subnet_cidr[count.index]
+  availability_zone = data.aws_availability_zones.available.names[count.index]
   tags = {
     deploy_id = var.deploy_id
     service_name = var.name
@@ -80,7 +80,7 @@ resource "aws_route_table" "rt" {
 
 # Public subnet association with the routing table for our EC2 instance
 resource "aws_route_table_association" "public" {
-  subnet_id      = aws_subnet.public.id
+  subnet_id      = aws_subnet.public[0].id
   route_table_id = aws_route_table.rt.id
 }
 

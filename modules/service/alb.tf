@@ -85,18 +85,19 @@ resource "aws_security_group" "alb" {
   }
 
   # Allow inbound and outbound traffic over HTTP
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  egress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+  # ingress {
+  #   from_port   = 80
+  #   to_port     = 80
+  #   protocol    = "tcp"
+  #   cidr_blocks = ["0.0.0.0/0"]
+  # }
+
+  # egress {
+  #   from_port   = 80
+  #   to_port     = 80
+  #   protocol    = "tcp"
+  #   cidr_blocks = ["0.0.0.0/0"]
+  # }
 
   tags = {
     deploy_id    = var.deploy_id
@@ -113,7 +114,7 @@ resource "aws_lb_target_group" "backend" {
   vpc_id   = aws_vpc.vpc.id
 
   health_check {
-    path = "/admin/health"
+    path = "/health/"
   }
 
   tags = {
@@ -128,13 +129,27 @@ resource "aws_lb_target_group" "frontend" {
   vpc_id   = aws_vpc.vpc.id
 
   health_check {
-    path = "/"
+    path = "/health"
   }
 
   tags = {
     Name = "frontend-tg"
   }
 }
+
+resource "aws_lb_target_group_attachment" "backend_attachment" {
+  target_group_arn = aws_lb_target_group.backend.arn
+  target_id        = aws_instance.ec2.id  #replace this with the id of your backend instance
+  port             = 80
+}
+
+resource "aws_lb_target_group_attachment" "frontend_attachment" {
+  target_group_arn = aws_lb_target_group.frontend.arn
+  target_id        = aws_instance.ec2.id  #replace this with the id of your frontend instance
+  port             = 3000
+}
+
+
 
 # Create a load balancer for the django app
 resource "aws_lb" "alb" {
@@ -181,7 +196,7 @@ resource "aws_lb_listener_rule" "backend" {
 
   condition {
     path_pattern {
-      values = ["/admin*"]
+      values = ["/admin*", "/gray*"]
     }
   }
 }

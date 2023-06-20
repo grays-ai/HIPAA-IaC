@@ -95,6 +95,7 @@ resource "null_resource" "ec2_provision" {
   # You can now use the script to apply changes to the EC2 instance, even if terraform state is unaffected
   provisioner "local-exec" {
     command = <<-EOT
+      echo "Executing Ansible playbook:"
       echo ' \
         export ANSIBLE_HOST_KEY_CHECKING=False
         ansible-playbook \
