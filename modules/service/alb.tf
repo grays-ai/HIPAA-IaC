@@ -129,7 +129,7 @@ resource "aws_lb_target_group" "frontend" {
   vpc_id   = aws_vpc.vpc.id
 
   health_check {
-    path = "/health"
+    path = "/"
   }
 
   tags = {
