@@ -59,7 +59,7 @@ output "rds_db_name" {
   depends_on  = [aws_db_instance.rds]
 }
 /* S3 Outputs */
-output "cert_bucket_name" {
-  value = aws_s3_bucket.cert.id
+output "patients_bucket_name" {
+  value = aws_s3_bucket.patients.id
 }
 

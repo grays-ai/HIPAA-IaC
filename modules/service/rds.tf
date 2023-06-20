@@ -62,6 +62,7 @@ resource "aws_db_instance" "rds" {
   engine_version      = tostring(var.rds_config.engine_version)
   instance_class      = var.rds_config.instance_class
   skip_final_snapshot = tobool(var.rds_config.skip_final_snapshot)
+  storage_encrypted   = true
 
   # DB connection configuration
   db_name  = var.rds_config.db_name
