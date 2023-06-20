@@ -113,7 +113,7 @@ resource "null_resource" "ec2_provision" {
           --extra-vars "django_superuser_password=${random_string.django_superuser_password.result}" \
           --extra-vars "django_superuser_email=${var.django_superuser_email}" \
           --extra-vars "django_use_s3=${var.django_use_s3}" \
-          --extra-vars "django_aws_cert_bucket_name=${module.service.cert_bucket_name}" \
+          --extra-vars "django_aws_cert_bucket_name=${module.service.patients_bucket_name}" \
           --extra-vars "django_aws_cert_bucket_region=${var.aws_region}" \
           --extra-vars "django_sql_database=${module.service.rds_engine}" \
           --extra-vars "django_sql_user=rds_admin_user" \
