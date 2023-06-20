@@ -129,13 +129,14 @@ See `modules/service/var.tf` for more information on the variables that can be c
 
 If you dont want to use terraform and ansible to build your docker image, then you can do something like this instead using your own backend and frontend containers: 
 
-- docker-compose build backend
-- docker tag backend:instructor-latest 848286615134.dkr.ecr.us-east-1.amazonaws.com/chart-review-ecr:backend
-- aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 848286615134.dkr.ecr.us-east-1.amazonaws.com/chart-review-ecr
-- docker push 848286615134.dkr.ecr.us-east-1.amazonaws.com/chart-review-ecr:backend
-- ssh -i /Users/jonahkaye/Desktop/startuping/ceo/gray-key.pem ec2-user@52.91.190.64
-- docker pull 848286615134.dkr.ecr.us-east-1.amazonaws.com/chart-review-ecr:backend
-- ./run_backend.sh
+docker-compose build backend
+docker tag backend:instructor-latest 848286615134.dkr.ecr.us-east-1.amazonaws.com/chart-review-ecr:backend
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 848286615134.dkr.ecr.us-east-1.amazonaws.com/chart-review-ecr
+docker push 848286615134.dkr.ecr.us-east-1.amazonaws.com/chart-review-ecr:backend
+ssh -i /Users/jonahkaye/.ssh/gray-ec2-key-dev-yancw9xa.pem ec2-user@44.194.24.68
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 848286615134.dkr.ecr.us-east-1.amazonaws.com/chart-review-ecr
+docker pull 848286615134.dkr.ecr.us-east-1.amazonaws.com/chart-review-ecr:backend
+./run_backend.sh
 
 To access your database: 
 
