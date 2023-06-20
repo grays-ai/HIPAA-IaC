@@ -14,6 +14,19 @@ To use this repository, you must have the following installed:
 - aws cli (configured with your credentials)
 - ansible
 
+### Some HIPAA features:
+
+- only https exposed to the outside world (other than ssh, which TODO should be on a specific IP)
+- encrypted RDS
+- encrypted and private s3 for patient data
+- internal access controls on the patients s3 and RDS (TODO)
+- cloudwatch logging (TODO)
+- VPC (TODO audit)
+    - - ALB communication within VPC over HTTP should be ok
+- Docker images in ECR (Ok?)
+- s3 Data retention (TODO)
+- identity management (hard to do on infra)
+- encrypted disks (should images in ECR be encrypted?) 
 # Repository structure:
 
 ## 'build/': Implements ECR with versioned Django docker images
