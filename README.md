@@ -27,6 +27,7 @@ To use this repository, you must have the following installed:
 - s3 Data retention (TODO)
 - identity management (hard to do on infra)
 - encrypted disks (should images in ECR be encrypted?) 
+
 # Repository structure:
 
 ## 'build/': Implements ECR with versioned Django docker images
