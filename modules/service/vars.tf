@@ -72,6 +72,7 @@ variable "vpc_cidr_block" {
   type        = string
   default     = "10.0.0.0/16"
 }
+
 # Our public subnet CIDRs
 variable "public_subnet_cidr" {
   description = "A list of available public subnet CIDRs"

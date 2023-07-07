@@ -80,7 +80,8 @@ resource "aws_route_table" "rt" {
 
 # Public subnet association with the routing table for our EC2 instance
 resource "aws_route_table_association" "public" {
-  subnet_id      = aws_subnet.public[0].id
+  count          = 2
+  subnet_id      = aws_subnet.public[count.index].id
   route_table_id = aws_route_table.rt.id
 }
 
