@@ -8,3 +8,4 @@ build/compliance-django-app
 # Local .terraform directories
 **/.terraform/
 
+run_backend.sh
