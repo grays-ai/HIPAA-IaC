@@ -141,8 +141,6 @@ slug: roles
 
     Without clearly defined roles and responsibilities, there is a risk of non-remediated weaknesses and a prolonged duration of addressing security issues. Unclear responsibilities can lead to confusion and poor management of security threats. 
 
-
-
 ### II. Data Classification and Management Policy
 
 **I. Purpose**

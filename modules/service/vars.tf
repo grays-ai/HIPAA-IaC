@@ -30,7 +30,7 @@ variable "ec2_config" {
   type        = map(any)
   # Set config values as strings and convert to the appropriate type.
   default     = {
-    instance_type    = "t4g.xlarge" # The instance type to use for the EC2 instance
+    instance_type    = "t4g.2xlarge" # The instance type to use for the EC2 instance
     monitoring       = "true" # Whether to enable detailed monitoring
     volume_type      = "gp2" # The type of volume to use for the EC2 instance
     volume_size      = "20" # in GB. How big of a volume to mount on the Ec2. This is the Size needed for the AMI

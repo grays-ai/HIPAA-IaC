@@ -9,3 +9,4 @@ build/compliance-django-app
 **/.terraform/
 
 run_backend.sh
+dev/gray-ec2-provision.sh
