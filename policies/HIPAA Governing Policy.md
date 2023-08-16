@@ -1,27 +1,27 @@
-### Introduction 
+__Introduction__ 
 Within our HIPAA operations document, we will utilize the name GRAYS AI, INC. to denote the legal business entity. Please note that our operational activities are conducted under the trade name Searchable Health, for which we have filed a DBA registration.
-Our organization is dedicated to maintaining a secure environment for data and assets. GRAYS AI, INC. place the utmost responsibility to protect Personal Health Information (PHI) through comprehensive administrative, physical, and technical security safeguards.
+Our organization is dedicated to maintaining a secure environment for data and assets. GRAYS AI, INC. places the utmost responsibility to protect Personal Health Information (PHI) through comprehensive administrative, physical, and technical security safeguards.
 This document includes but is not limited to policy for frequent vulnerability testing, mitigation strategies for potential threats, data classification policy, change management policy, incident response policy, and sanitation practices. All policies and procedures are readily available, and workforce members and customers receive instruction on our security documentation and where they can find it.
 
-### Designated Personal
+__Designated Personal__
 Jonah Kaye is the Chief Security Officer (CSO) of GRAYS AI, INC. 
 The CSO is responsible for ensuring the organization's security and privacy, overseeing threat response, and ensuring compliance with data protection regulations. In case of breaches, the CSO leads investigations and response efforts.
-The CSO can be reached via phone, 310)-994-1368, and email, jonah.arturo@gmail.com, in the case of an incident (see Incident Response Policy).
+The CSO can be reached via phone at (310)-994-1368, and email at jonah.arturo@gmail.com, in the case of an incident (see Incident Response Policy).
 The Change Advisory Board (CAB) comprises Jonah Kaye, Winston Guo, and Daniel Buckler
-The CAB is responsible for promoting privacy training and awareness among employees to enhance cybersecurity practices. They are also responsibly for overseeing changes to the product to ensure security remain a top priority (see Change Management Policy). 
+The CAB is responsible for promoting privacy training and awareness among employees to enhance cybersecurity practices. They are also responsible for overseeing changes to the product to ensure security remains a top priority (see Change Management Policy). 
 
-### Reviewing and Updating Policies
+__Reviewing and Updating Policies__
 The CBO and CSO review the SRA every quarter to ensure GRAYS AI, INC. remains HIPAA compliant. Our security documentation and policies are updated on a monthly basis or in the event of an operational change or security incident. 
 Information systems are reviewed on a monthly basis to assess security settings that can be implemented for safeguarding PHI. All of our company's PHI is hosted on AWS, and we regularly review the AWS Security Bulletin to stay up to date with the latest updates to the security offerings.
 https://aws.amazon.com/security/security-bulletins/?card-body.sort-by=item.additionalFields.bulletinId&card-body.sort-order=desc&awsf.bulletins-flag=*all&awsf.bulletins-year=*all 
 
-### Asset Management Policy
+__Asset Management Policy__
 We maintain a detailed inventory of our organization's PHI-containing electronic devices and assets. These assets have been identified, approved, assigned to workforce members, and inventories in the Google Suite in the file called GRAYS AI, INC. Asset Inventory 
 
-### Security Policy
+__Security Policy__
 We conduct a security risk assessment every quarter or in response to operational changes or security incidents. The process involves identifying assets, evaluating data flow, and recognizing internal and external threats. Following this, we will conduct a comprehensive vulnerability assessment (see below) to gauge the efficacy of existing security measures. 
 
-### Vulnerability Scanning
+__Vulnerability Scanning__
 Our organization follows a comprehensive vulnerability testing policy to safeguard our PHI and maintain a secure AWS environment and Web Application. We conduct one vulnerability test per quarter.
 To ensure our AWS Environment is secure we utilize Prowler, an open-sourced vulnerability tool, and AWS Inspector. By combining the capabilities of these tools, we proactively identify and address security weaknesses and ensure that our PHI remains protected against emerging threats. In addition, to our quarterly vulnerability tests, we have enabled Amazon GuardDuty. This always-on tool operates in the background to continuously detect any suspicious or malicious activity within our AWS environment.
 Prowler: https://github.com/prowler-cloud/prowler
@@ -30,7 +30,7 @@ OWASP ZAP (Zed Attack Proxy): https://www.zaproxy.org/
 Nikto: https://cirt.net/nikto2
 The findings from these tests will be documented in a comprehensive report and shared with the CSO for remediation. A retest will follow to verify the effectiveness of the fixes. 
 
-### Potential: Threats & Vulnerabilities
+__Potential: Threats & Vulnerabilities__
 1.	Threat: Unauthorized Access / Vulnerability: Weak Access Control
 Impact Rating: High Likelihood Rating: Medium
 The security measures to prevent weak access controls are the following: mandating quarterly password changes, multi-factor authentication, and role-based access controls to provide access only based on specific roles and responsibilities. Additionally, quarterly access reviews are conducted to ensure permissions are up-to-date and aligned with business requirements.
@@ -95,10 +95,10 @@ Our data is hosted and backed by AWS, which assumes responsibility for maintaini
 Impact Rating: Medium Likelihood Rating: Medium
 We maintain clear roles with detailed job descriptions and a well-defined organizational structure. Furthermore, we implement strict role-based access controls to ensure that employees are granted access only to the resources and data essential for their respective roles (see Defined Roles and Duties).
 
-### Retention Policy
+__Retention Policy__
 All reports of activity in our AWS environment recorded using AWS CloudTrail, Amazon CloudWatch, AWS Config, and AWS Key Management Service Audit will be retained for a minimum of six years.
 
-###  Classification Policy
+__Classification Policy__
 Tier 1 - Protected: This tier includes all information that is mandated to be protected under a specific compliance regime. It is assumed that any customer information falls into this category. Tier 1 information is considered extremely sensitive and must be safeguarded to protect the privacy of individuals, the security and integrity of systems, to guard against fraud, and to reduce the risk of unauthorized disclosure.
 
 Tier 1 information may include, but is not limited to:
@@ -137,10 +137,10 @@ Access to this information is limited to GRAYS AI, INC. employees or third parti
 
 Tier 4 - Public: This tier includes data and information that are considered to freely exist in the public domain and contain no information from Tier 1, 2, or 3.
 
-### Application Classification
+__Application Classification__
 Application classification follows the type of information that the application handles (stores, processes, or transmits). If an application handles Tier 1 (Protected) data, then the application is considered a Tier 1 (Protected) application.
 
-### Change Management Policy
+__Change Management Policy__
 GRAYS AI, INC.’s goal is to make all reasonable attempts to maintain the confidentiality and integrity of its production systems when changing, updating, or otherwise introducing new technologies into the production environment. All records of major feature changes shall be stored for 6 years in the following file: GRAYS AI, INC. Product Change Log. This file will be maintained and backed up consistently.
 The CAB team will review changes, approve them where required (or not), and review emergency changes after the emergency has been resolved.
 Three categories of change:
@@ -148,7 +148,7 @@ A Standard Change: A low-risk configuration change or update that has little or 
 A Controlled Change: A change that might require downtime or affect the stability of systems. These changes have either higher risk or difficult to define risks associated with them and as a result, require review and approval from the CAB. These changes also require a declared maintenance window that is communicated with customers in advance of the change. Controlled changes require extensive quality assurance testing, appropriate staffing during the change, documented test plan to ensure that the change was successful, and a complete rollback plan to follow in the event the change needs to be reverted.
 An Emergency Change: A change that is the result of an outage or failure. These changes are intended to return production environments to a working state. These changes shall be applied as quickly as possible. They require that after the environment is stable and returned to normal function a Root Cause Analysis is performed that documents the cause of the emergency, the nature of the fix, the extent of damage or loss, the individuals involved in the change, and measures taken to ensure that the issue does not happen again. The CSO leads the analysis and ensures that the documentation is sufficient and communicated to the appropriate parties. All Root Case Analysis will be performed and stored in the following for at least 6 years: GRAYS AI, INC. Root Cause Analysis. This file will be maintained and backed up consistently.
 
-### Incident Response Policy
+__Incident Response Policy__
 GRAYS AI, INC. has implemented a security incident response plan to provide an effective approach to managing incidents (security-related and otherwise). The plan was developed to meet compliance obligations and includes the following steps:
 *	Effectively and quickly identify the nature of the incident, its scope, and severity.
 *	Identify a single point of coordination and communication.
@@ -173,13 +173,13 @@ Potential Emergencies Include
 4.	Infrastructure Failures:
 *	Internet Service Provider (ISP) Outages: Interruptions in internet connectivity can hinder access to cloud-based services and data.
 
-### Breach Notification
+__Breach Notification__
 In the event of a breach, whoever discovers the breach will immediately notify the CSO. Subsequently, the CSO will inform the person or persons responsible for addressing threats, providing both verbal and written communication regarding the nature of the vulnerability and the corrective action plan. Individuals who are responsible for responding to incidents have been trained on their role and responsibilities upon hire and quarterly. 
 To facilitate breach notification in case of unauthorized PHI access, acquisition, use, or disclosure, we will adhere to the American Recovery and Reinvestment Act (ARRA)/Health Information Technology for Economic and Clinical Health Act (HITECH) and relevant federal or state notification laws.
 The Federal Trade Commission (FTC) has published breach notification rules for vendors of personal health records as required by ARRA/HITECH. The FTC rule applies to entities not covered by HIPAA, primarily vendors of personal health records. The rule is effective September 24, 2009, with full compliance required by February 22, 2010.
 The American Recovery and Reinvestment Act of 2009 (ARRA) was signed into law on February 17, 2009. Title XIII of ARRA is the Health Information Technology for Economic and Clinical Health Act (HITECH). HITECH significantly impacts the Health Insurance Portability and Accountability (HIPAA) Privacy and Security Rules. While HIPAA did not require notification when patient-protected health information (PHI) was inappropriately disclosed, covered entities and business associates may have chosen to include notification as part of the mitigation process. HITECH does require notification of certain breaches of unsecured PHI to the following: individuals, the Department of Health, and Human Services (HHS), and the media. The effective implementation of this provision is September 23, 2009 (pending publication of HHS regulations).
 
-### Breach Policy
+__Breach Policy__
 This policy is reviewed, tested, and evaluated quarterly, or in response to operational changes or security incidents. 
 Discovery of Breach: A breach of PHI shall be treated as "discovered" as of the first day on which such breach is known to the organization (includes breaches by the organization's Customers, Partners, or subcontractors). Following the discovery of a potential breach, the organization shall begin an investigation immediately, conduct a risk assessment, and based on the results of the risk assessment, begin the process to notify each Customer affected by the breach. GRAYS AI, INC. shall also begin the process of determining what external notifications are required or should be made (e.g., Secretary of the Department of Health & Human Services (HHS), law enforcement officials, etc.)
 Breach Investigation: The GRAYS AI, INC. CSO shall name an individual to act as the investigator of the breach. The investigator shall be responsible for the management of the breach investigation, completion of a risk assessment, and coordination with others in the organization as appropriate. All documentation related to the breach investigation, including the risk assessment, shall be retained for a minimum of six years.
@@ -213,7 +213,7 @@ The following applies to all breaches, regardless of the type of information inv
 *	Complaints: GRAYS AI, INC. must provide a process for individuals to make complaints concerning the organization's patient privacy policies and procedures or its compliance with such policies and procedures.
 *	Sanctions: The organization shall have in place and apply appropriate sanctions against members of its workforce, Customers, and Partners who fail to comply with the privacy policies and procedures. If members of the workforce do not follow procedures and policies, they are subject to immediate dismissal and potential legal consequences.
 
-### Platform Customer Responsibilities
+__Platform Customer Responsibilities__
 The GRAYS AI, INC. customer that maintains, retains, modifies, stores, or otherwise holds, uses, or discloses unsecured PHI shall, without unreasonable delay and in no case later than 60 calendar days after discovery of a breach, notify GRAYS AI, INC. of such breach. 
 
 The Customer shall provide GRAYS AI, INC. with the following information:
@@ -223,15 +223,15 @@ The Customer shall provide GRAYS AI, INC. with the following information:
 *	Resolution steps that were taken to mitigate the breach and prevent future occurrences.
 *	Notice to Secretary of Department of Health and Human Services (HHS): GRAYS AI, INC. Customers are responsible for providing notice to the Secretary of HHS at the Customer's discretion.
 
-### Business Associate Agreement (BAA) Policy
+__Business Associate Agreement (BAA) Policy__
 Before engaging with third-party vendors or business associates with access to PHI, we assess the need for a BAA. If deemed necessary, we draft a comprehensive BAA outlining responsibilities, data security, breach notification, and compliance. The BAA limits access to minimum necessary PHI and undergoes review and approval by legal counsel and compliance officers. We record the devices or mechanisms used for access, and our ability to control and monitor third-party access. Once finalized, it is executed by both parties and retained securely. 
 We keep an up-to-date list of all business associates accessing PHI, and we have BAAs on file for each of them. It is our policy to obtain BAAs from all business associates who access another covered entity's electronic PHI on our behalf. Our BAA is compliant with the Omnibus Rule updates to HIPAA, and we perform periodic reviews to ensure ongoing compliance. 
 Our BAAs include language describing how security-relevant changes should be communicated to our organization. Our Business Associate Agreements include specifications on the authorized use and disclosure of PHI for both our third-party vendors and their subcontractors. Our BAAs describe requirements to provide satisfactory assurances for the protection of PHI, obtain the same assurances from its subcontractors, and report security incidents (experienced by the Business Associate or its subcontractors) promptly. This policy ensures the safeguarding of PHI and adherence to regulatory standards in all business relationships.
 
-### Physical Security Policy
+__Physical Security Policy__
 All workforce members are routinely reminded that it is their responsibility to report an incident of unauthorized access to covered data to the CSO. Any surplus equipment must be stored securely while not in use and disposed of when no longer required. Workforce members must report a lost and/or stolen key(s) to the CSO.
 
-### Rules Governing Daily Computer Use
+__Rules Governing Daily Computer Use__
 *	You must maintain a clean desk: Put everything in a secure zone when you walk away.
 *	You must protect displays of PHI and sensitive data: Position your computer so no one can walk up behind you and observe what you're doing.
 *	You must physically secure your computer: always lock your computer when you walk away from it. As well, you must set up a screen saver that locks your computer after fifteen minutes.
@@ -256,11 +256,13 @@ Do not do the following:
 *	Do not install any office software (Microsoft Word, Excel, PowerPoint, Apple Pages, Keynote).
 *	Do not install backup software since everything will be in G Suite, an encrypted file storage service.
 
-### Sanitary Disposal
+__Sanitary Disposal__
 We prioritize safeguarding sensitive information by backing up and wiping all data before disposing of devices. SIM cards and memory cards are removed, and accounts are signed out to prevent unauthorized access. For the utmost security, devices undergo physical destruction.
-### Third-Party Terminating Policy
+
+__Third-Party Terminating Policy__
 We have a clear policy for terminating or modifying third-party access. Prompt communication is initiated with third parties, and on the specified date, we swiftly revoke or adjust access points. Data is securely backed up and transferred if needed. Regular monitoring and compliance reviews ensure adherence to our policy.
-### Sanitation Policy for Re-Use
+
+__Sanitation Policy for Re-Use__
 We implement a comprehensive process to completely purge data from all devices before reuse. This procedure includes device reimaging, degaussing, or other industry-standard methods that comply with the guidelines outlined in NIST SP 800-88 and OCR Guidance to Render Unsecured Protected Health Information Unusable, Unreadable, or Indecipherable to Unauthorized Individuals.
 
 
