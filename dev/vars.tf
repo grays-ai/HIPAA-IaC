@@ -71,3 +71,44 @@ variable "django_use_s3" {
   description = "Whether to use S3 for storing uploaded files. TRUE or FALSE"
   default = "TRUE"
 }
+
+
+variable "lambda_s3_bucket" {
+  description = "The name of the S3 bucket containing the Lambda function source"
+  default = "gray-lambda-backup"
+}
+
+variable "lambda_s3_key" {
+  description = "The key of the Lambda function source inside the S3 bucket"
+  default = "backup_lambda.zip"
+}
+
+variable "lambda_handler" {
+  description = "The handler for the Lambda function"
+  default     = "index.handler" # Example default value, adjust as needed
+}
+
+variable "lambda_runtime" {
+  description = "The runtime for the Lambda function"
+  default     = "python3.9" # Example default value, adjust as needed
+}
+
+variable "lambda_timeout" {
+  description = "The timeout value for the Lambda function in seconds"
+  default     = 900
+}
+
+variable "lambda_memory" {
+  description = "The amount of memory in MB assigned to the Lambda function"
+  default     = 128
+}
+
+variable "weaviate_url" {
+  description = "Example environment variable 1 for Lambda"
+  default     = "http://weaviate:8080"
+}
+
+variable "weaviate_classname" {
+  description = "Example environment variable 2 for Lambda"
+  default     = "Patients"
+}

@@ -155,3 +155,95 @@ docker pull 848286615134.dkr.ecr.us-east-1.amazonaws.com/chart-review-ecr:backen
 To access your database: 
 
 - docker run -it postgres psql -h gray-rds-dev-yancw9xa.crx8rth9mjna.us-east-1.rds.amazonaws.com -U rds_admin_user -d postgres -p 5432
+
+NOTES:
+
+Added this: "Action": "textract:DetectDocumentText", Added Cloudwatch Logs Access to EC2 role
+Added this: "Action": "textract:AnalyzeDocument"
+Taz changes to routing tables 
+s3 private is that defined manually or programatically
+
+Added CORS to both buckets, test and dev:
+[
+    {
+        "AllowedHeaders": [
+            "*"
+        ],
+        "AllowedMethods": [
+            "GET"
+        ],
+        "AllowedOrigins": [
+            "http://localhost:3000"
+        ],
+        "ExposeHeaders": [],
+        "MaxAgeSeconds": 3000
+    }
+]
+
+
+Installing cloudwatch on EC2:
+sudo yum install amazon-cloudwatch-agent
+sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-config-wizard
+sudo vim /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.d/file_config.json
+- copy config into there.
+sudo systemctl start amazon-cloudwatch-agent
+systemctl status amazon-cloudwatch-agent
+
+Current config as follows:
+{
+	"agent": {i()
+		"metrics_collection_interval": 60,
+		"run_as_user": "root"
+	},
+	"logs": {
+		"logs_collected": {
+			"files": {
+				"collect_list": [
+					{
+						"file_path": "",
+						"log_group_name": ".",
+						"log_stream_name": "{instance_id}",
+						"retention_in_days": 90
+					}
+				]
+			}
+		}
+	},
+	"metrics": {
+		"aggregation_dimensions": [
+			[
+				"InstanceId"
+			]
+		],
+		"append_dimensions": {
+			"AutoScalingGroupName": "${aws:AutoScalingGroupName}",
+			"ImageId": "${aws:ImageId}",
+			"InstanceId": "${aws:InstanceId}",
+			"InstanceType": "${aws:InstanceType}"
+		},
+		"metrics_collected": {
+			"disk": {
+				"measurement": [
+					"used_percent"
+				],
+				"metrics_collection_interval": 60,
+				"resources": [
+					"*"
+				]
+			},
+			"mem": {
+				"measurement": [
+					"mem_used_percent"
+				],
+				"metrics_collection_interval": 60
+			},
+			"statsd": {
+				"metrics_aggregation_interval": 60,
+				"metrics_collection_interval": 60,
+				"service_address": ":8125"
+			}
+		}
+	}
+}
+
+NUMEXPR_MAX_THREADS=16

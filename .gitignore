@@ -10,4 +10,8 @@ build/compliance-django-app
 
 run_backend.sh
 dev/gray-ec2-provision.sh
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 build/

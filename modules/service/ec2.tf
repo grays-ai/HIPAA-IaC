@@ -154,6 +154,7 @@ resource "aws_iam_role_policy" "ec2" {
           "s3:GetObject",
           "s3:PutObject",
           "s3:DeleteObject",
+          "lambda:InvokeFunction",
         ],
         Resource : "*"
       }
