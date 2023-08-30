@@ -158,8 +158,6 @@ To access your database:
 
 NOTES:
 
-Added this: "Action": "textract:DetectDocumentText", Added Cloudwatch Logs Access to EC2 role
-Added this: "Action": "textract:AnalyzeDocument"
 Taz changes to routing tables 
 s3 private is that defined manually or programatically
 

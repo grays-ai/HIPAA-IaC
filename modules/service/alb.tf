@@ -108,32 +108,36 @@ resource "aws_security_group" "alb" {
 }
 
 resource "aws_lb_target_group" "backend" {
-  name     = "backend-tg"
+  name     = "${var.stage}-backend-tg"
   port     = 80
   protocol = "HTTP"
   vpc_id   = aws_vpc.vpc.id
 
   health_check {
     path = "/health/"
+    interval = 300
+
   }
 
   tags = {
-    Name = "backend-tg"
+    Name     = "${var.stage}-backend-tg"
   }
 }
 
 resource "aws_lb_target_group" "frontend" {
-  name     = "frontend-tg"
+  name     = "${var.stage}-frontend-tg"
   port     = 3000
   protocol = "HTTP"
   vpc_id   = aws_vpc.vpc.id
 
   health_check {
     path = "/"
+    interval = 300
   }
 
   tags = {
-    Name = "frontend-tg"
+    Name = "${var.stage}-frontend-tg"
+
   }
 }
 

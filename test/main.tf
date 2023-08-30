@@ -14,7 +14,7 @@ terraform {
   # This bucket already exists in our AWS account
   backend "s3" {
       bucket = "grays-tf-remote-state"
-      key    = "grays/dev/terraform.tfstate"
+      key    = "grays/test/terraform.tfstate"
       region = "us-east-1"
   }
 }

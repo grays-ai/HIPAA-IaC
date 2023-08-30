@@ -25,17 +25,6 @@ variable "domain_name" {
 /* Ec2 Configuration */
 
 # The configuration for our EC2 instance
-variable "ec2_config" {
-  description = "Service Configuration for EC2"
-  type        = map(any)
-  # Set config values as strings and convert to the appropriate type.
-  default     = {
-    instance_type    = "t4g.xlarge" # The instance type to use for the EC2 instance
-    monitoring       = "true" # Whether to enable detailed monitoring
-    volume_type      = "gp2" # The type of volume to use for the EC2 instance
-    volume_size      = "20" # in GB. How big of a volume to mount on the Ec2. This is the Size needed for the AMI
-  }
-}
 
 /* RDS Configuration */
 
@@ -91,4 +80,55 @@ variable "private_subnet_cidrs" {
     "10.0.101.0/24",
     "10.0.102.0/24",
   ]
+}
+
+variable "lambda_s3_bucket" {
+  description = "The name of the S3 bucket containing the Lambda function source"
+  type = string
+}
+
+variable "lambda_s3_key" {
+  description = "The key of the Lambda function source inside the S3 bucket"
+  type = string
+}
+
+variable "lambda_handler" {
+  description = "The handler for the Lambda function"
+  type     = string
+}
+
+variable "lambda_runtime" {
+  description = "The runtime for the Lambda function"
+  type     = string
+}
+
+variable "lambda_timeout" {
+  description = "The timeout value for the Lambda function in seconds"
+  type        = number
+}
+
+variable "lambda_memory" {
+  description = "The amount of memory in MB assigned to the Lambda function"
+  type        = number
+}
+
+variable "weaviate_url" {
+  description = "Example environment variable 1 for Lambda"
+  type     = string
+}
+
+variable "weaviate_classname" {
+  description = "Example environment variable 2 for Lambda"
+  type     = string
+}
+
+variable "ami_version" {
+  description = "Version of the AMI to use for the EC2 instance"
+  type = string
+}
+
+variable "ec2_config" {
+  description = "Service Configuration for EC2"
+  type        = map(any)
+  # Set config values as strings and convert to the appropriate type.
 }

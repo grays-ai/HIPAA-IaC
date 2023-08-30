@@ -91,7 +91,7 @@ resource "null_resource" "ec2-key-write" {
 }
 # Key pair to use for the EC2 instance
 resource "aws_key_pair" "ec2" {
-  key_name   = "gray-key"
+  key_name   = join("-", [var.name, "ec2-key", var.stage, var.deploy_id])
   public_key = tls_private_key.ec2.public_key_openssh
   tags       = {
     deploy_id    = var.deploy_id
@@ -149,12 +149,14 @@ resource "aws_iam_role_policy" "ec2" {
           "ecr:GetAuthorizationToken",
           "ecr:GetDownloadUrlForLayer",
           "ecr:BatchGetImage",
-          # Allows our Ec2 instance to read and write to S3
           "s3:ListBucket",
           "s3:GetObject",
           "s3:PutObject",
           "s3:DeleteObject",
           "lambda:InvokeFunction",
+          "textract:DetectDocumentText",
+				  "textract:AnalyzeDocument",
+          "logs:*",
         ],
         Resource : "*"
       }
@@ -181,7 +183,7 @@ resource "aws_instance" "ec2" {
     volume_type = var.ec2_config.volume_type
   }
   # Link our Dependencies
-  ami                    = "ami-0b54418bdd76353ce"
+  ami                    = var.ami_version
   key_name               = aws_key_pair.ec2.key_name
   iam_instance_profile   = aws_iam_instance_profile.ec2.name
   vpc_security_group_ids = [aws_security_group.ec2.id]

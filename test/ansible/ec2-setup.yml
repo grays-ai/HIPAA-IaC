@@ -1,0 +1,43 @@
+- become: yes
+  hosts: all
+  name: Configure our Ec2 instance to run a Dockerized Django app
+  tasks:
+    ### Install service dependencies ###
+    - name: Update Yum
+      yum:
+        name: '*'
+        state: latest
+        update_cache: yes
+      register: yum_update
+
+    - name: Verify Python version
+      command: python3 --version
+      register: python_version
+
+    - name: Debug python_version
+      debug:
+        var: python_version.stdout_lines
+
+    - name: Install Docker
+      yum:
+        name: docker
+        state: present
+      register: docker_install
+    - name: Start Docker
+      service:
+        name: docker
+        state: started
+      register: docker_start
+    - name: Add User to Docker Group
+      user:
+        name: ec2-user
+        groups: docker
+        append: yes
+      register: docker_user
+      
+    - name: Install pip
+      raw: sudo yum -y install python3-pip
+
+    - name: Install Python Docker
+      command:
+        cmd: pip install --ignore-installed docker
